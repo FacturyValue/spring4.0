@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-4.0.xsd
+    ">
+    <!--
+            配置bean
+            class: bean的全类名 ，通过反射的方式在IOC容器中创建Bean,所以要求Bean 中必须要有无参构造器
+            id: 标识容器中的bean。 id唯一
+    -->
+        <bean id="helloWorld" class="com.sirniclolas.spring.beans.HelloWorld" >
+            <property name="name" value="Spring"></property>
+            <property name="name2" value="Spring2"></property>
+            <property name="abc" value="1"></property>
+        </bean>
+    <!--    <bean id="helloWorld2" class="com.sirniclolas.spring.beans.HelloWorld">
+            <property name="name2" value="Spring2"></property>
+        </bean>-->
+    <!--通过构造方法来配置bean 的属性-->
+    <bean id="car" class="com.sirniclolas.spring.beans.Car">
+        <constructor-arg value="goldpalm" index="0"></constructor-arg>
+        <constructor-arg value="Audi" index="1"></constructor-arg>
+        <!--<constructor-arg value="300000" index="2"/>-->
+        <constructor-arg value="300000" type="double"/>
+        <!--<constructor-arg value="100" index="3"/>-->
+    </bean>
+    <!--使用构造器注入属性值可以指定参数的位置和参数的类型 从而区分重载-->
+    <bean id="car2" class="com.sirniclolas.spring.beans.Car">
+        <!--<constructor-arg value="goldpalm" type="java.lang.String"/>-->
+        <!--如果字面值包括特殊字符可以使用<![CDATA[]]>包裹起来-->
+        <constructor-arg  type="java.lang.String">
+            <!--设置值的话，可以直接用value子节点来设置 -->
+            <value><![CDATA[<GoldPalm^>]]></value>
+        </constructor-arg>
+        <constructor-arg value="BMW" type="java.lang.String"/>
+        <!--<constructor-arg  value="240" type="int"/>-->
+        <constructor-arg type="int">
+            <value>240</value>
+        </constructor-arg>
+    </bean>
+    <bean id="person" class="com.sirniclolas.spring.beans.Person">
+        <property name="name" value="sirniclolas"/>
+        <property name="age" value="25"/>
+        <!--可以使用property的ref属性或者<ref/>建立bean之间的引用关系-->
+        <!--<property name="car" ref="car2"/>-->
+        <!--<property name="car">
+            <ref bean="car2"/>
+        </property>-->
+        <!--内部Bean 不能被外部引用-->
+        <property name="car">
+            <bean  class="com.sirniclolas.spring.beans.Car"><!--id 可不用写-->
+                <constructor-arg value="GoldPalm"></constructor-arg>
+                <constructor-arg value="Ford"></constructor-arg>
+                <constructor-arg value="200000" type="double"/>
+            </bean>
+        </property>
+        <!--<property name="car.maxSpead" value="300"/>-->
+     </bean>
+
+    <bean id="person2" class="com.sirniclolas.spring.beans.Person">
+        <constructor-arg value="Jerry"/>
+        <constructor-arg value="25"/>
+        <!--<constructor-arg ref="car2"/>-->
+        <!--测试null值-->
+        <!--<constructor-arg><null/></constructor-arg>-->
+        <constructor-arg ref="car"></constructor-arg>
+        <!--<property name="car.maxSpead" value="300"></property>-->
+    </bean>
+
+    <bean id="person3" class="com.sirniclolas.spring.beans.collections.Person">
+        <property name="name" value="rudy"/>
+        <property name="age" value="24"/>
+        <property name="cars">
+            <!--使用list节点-->
+            <list>
+                <ref bean="car"></ref>
+                <ref bean="car2"></ref>
+                <bean  class="com.sirniclolas.spring.beans.Car"><!--id 可不用写-->
+                    <constructor-arg value="GoldPalm"></constructor-arg>
+                    <constructor-arg value="Ford"></constructor-arg>
+                    <constructor-arg value="200000" type="double"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--配置map属性值-->
+    <bean class="com.sirniclolas.spring.beans.collections.NewPerson" id="newPerson">
+        <property name="name" value="rutteger"/>
+        <property name="age" value="21"/>
+        <property name="cars">
+            <!--使用map节点以及map的entry-->
+            <map>
+                <entry key="AA" value-ref="car"></entry>
+                <entry key="BB" value-ref="car2"></entry>
+            </map>
+        </property>
+    </bean>
+
+    <!--配置Properties 属性值-->
+    <bean id="datasource" class="com.sirniclolas.spring.beans.collections.DataSource">
+        <property name="properties">
+            <!--使用props和prop 来为Properties属性赋值-->
+            <props>
+                <prop key="user" >root</prop>
+                <prop key="password" >root</prop>
+                <prop key="jdbcUrl" >jdbc:mysql:////test</prop>
+                <prop key="driverClassName" >com.mysql.jdbc.Driver</prop>
+            </props>
+        </property>
+    </bean>
+    <!--配置单例的集合bean，以供多个bean引用-->
+    <util:list id="cars">
+        <ref bean="car"/>
+        <ref bean="car2"/>
+    </util:list>
+
+    <bean id="person4" class="com.sirniclolas.spring.beans.collections.Person">
+        <property name="name" value="jack"/>
+        <property name="age" value="18"/>
+        <property name="cars" ref="cars"/>
+    </bean>
+    <!--通过P命名空间为bean的属性赋予值-->
+    <bean id="person5" class="com.sirniclolas.spring.beans.collections.Person" p:name="Queen" p:age="26" p:cars-ref="cars"></bean>
+</beans>
