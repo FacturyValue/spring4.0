@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+
+        <bean id="address" class="com.sirniclolas.spring.beans.spel.Address">
+                <property name="city" value="#{'ShangHai'}"/>
+                <property name="street" value="#{'YangTaiYuan'}"/>
+        </bean>
+        <bean id="car" class="com.sirniclolas.spring.beans.spel.Car">
+                <property name="brand" value="Audi"/>
+                <property name="price" value="500000"/>
+                <property name="tyrePerimeter" value="#{T(java.lang.Math).PI * 80}"/>
+        </bean>
+
+        <bean id="person" class="com.sirniclolas.spring.beans.spel.Person">
+                <property name="car" value="#{car}"/>
+                <property name="city" value="#{address.city}"/>
+                <property name="info" value="#{car.price>300000 ? '金领' : '白领'}"/>
+                <property name="name" value="sirniclolas"/>
+        </bean>
+</beans>

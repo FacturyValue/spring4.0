@@ -1,8 +1,13 @@
-package com.sirniclolas.spring.beans.autowire;
+package com.sirniclolas.spring.beans.spel;
 
 public class Car {
     private  String brand;
     private  double price;
+    private  double tyrePerimeter;
+
+    public void setTyrePerimeter(double tyrePerimeter) {
+        this.tyrePerimeter = tyrePerimeter;
+    }
 
     public void setBrand(String brand) {
         this.brand = brand;
@@ -17,6 +22,7 @@ public class Car {
         return "Car{" +
                 "brand='" + brand + '\'' +
                 ", price=" + price +
+                ", tyrePerimeter=" + tyrePerimeter +
                 '}';
     }
     public Car(){

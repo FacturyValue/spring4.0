@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+
+        <!--抽象bean: bean的abstract 属性为true的bean . 这样的bean不能被IOC容器实例化，只能用来被继承配置-->
+        <bean id="address"  p:city="ShangHai" p:street="BaoAnHighway" abstract="true" ></bean>
+        <!--<bean id="address2" class="com.sirniclolas.spring.beans.autowire.Address" p:city="ShangHai" p:street="wangrongroad"></bean>-->
+        <!--<bean id="address2"  p:city="ShangHai" p:street="wangrongroad" parent="address"></bean>-->
+        <bean id="address2"  class="com.sirniclolas.spring.beans.autowire.Address"  parent="address"></bean>
+        <bean id="address3"  class="com.sirniclolas.spring.beans.autowire.Address"  p:city="ShangHai" p:street="meilinroad" parent="address2"></bean>
+        <!--<bean id="person" class="com.sirniclolas.spring.beans.autowire.Person" p:name="gasby" p:address-ref="address2"></bean>-->
+        <!--配置bean 关联一个car-->
+        <bean id="person" class="com.sirniclolas.spring.beans.autowire.Person" p:name="gasby" p:address-ref="address2" p:car-ref="car"></bean>
+        <bean id="car" class="com.sirniclolas.spring.beans.autowire.Car" p:brand="Benz" p:price="200000"/>
+
+
+</beans>
